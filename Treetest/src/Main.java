@@ -34,8 +34,6 @@ public class Main {
 		
 		//모든 노드중 가장 깊은 depth 찾기
 		int finalDepth = findMaxDepth(oldList);
-				
-		System.out.println(finalDepth);
 		
 		//알고리즘 적용
 		for (int i = 0; i < finalDepth; i++) {
@@ -43,7 +41,7 @@ public class Main {
 		}
 		
 		
-		//변환된 트리 데이터(그림2)
+		//변환된 트리 데이터 샘플(그림2)
 		List<TestVo> newList = new ArrayList<TestVo>();
 		newList.add(new TestVo("root","",""));
 		newList.add(new TestVo("대분류1","root",""));
