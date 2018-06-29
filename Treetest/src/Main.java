@@ -13,7 +13,7 @@ public class Main {
 		//요구사항 : 트리 구조가 표현된 데이터는 샘플과 같이 소팅이 되어있다는 전제이다.
 
 		
-		//트리 데이터(그림1)
+		//알고리즘 적용전 데이터 (그림1)
 		List<TestVo> oldList = new ArrayList<TestVo>();
 		oldList.add(new TestVo("root","",""));
 		oldList.add(new TestVo("대분류1","root",""));
@@ -31,17 +31,7 @@ public class Main {
 		oldList.add(new TestVo("대분류3","root",""));
 		oldList.add(new TestVo("중분류5","대분류3","★"));
 		
-		
-		//모든 노드중 가장 깊은 depth 찾기
-		int finalDepth = findMaxDepth(oldList);
-		
-		//알고리즘 적용
-		for (int i = 0; i < finalDepth; i++) {
-			oldList = roopMethod(oldList);
-		}
-		
-		
-		//변환된 트리 데이터 샘플(그림2)
+		//알고리즘 적용후 데이터 샘플(그림2)
 		List<TestVo> newList = new ArrayList<TestVo>();
 		newList.add(new TestVo("root","",""));
 		newList.add(new TestVo("대분류1","root",""));
@@ -50,7 +40,19 @@ public class Main {
 		newList.add(new TestVo("대분류3","root",""));
 		newList.add(new TestVo("중분류5","대분류3","★"));
 		
-		//테스트
+		
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		
+		//모든 노드중 가장 깊은 depth 찾기
+		int finalDepth = 가장깊은depth찾기(oldList);
+		
+		//병래리즘 적용
+		for (int i = 0; i < finalDepth; i++) {
+			oldList = 병래리즘(oldList);
+		}
+		
+		//샘플데이터랑 비교해서 확인
 		for (int i = 0; i < oldList.size(); i++) {
 			if (oldList.get(i).get부모아이디().equals(newList.get(i).get부모아이디()) && oldList.get(i).get자신아이디().equals(newList.get(i).get자신아이디())) {
 				System.out.println("같다");
@@ -61,8 +63,17 @@ public class Main {
 
 	}
 
+	
+	
+	
+	
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	
 	//모든 노드중 가장 깊은 depth 찾기
-	private static int findMaxDepth(List<TestVo> oldList) {
+	private static int 가장깊은depth찾기(List<TestVo> oldList) {
 		int cursorDepth = 0;
 		int finalDepth = 0;
 		for (int i = oldList.size()-1; i > 0; i--) {
@@ -80,16 +91,16 @@ public class Main {
 
 	
 	//루프 메서드. 트리 depth 만큼 호출. 
-	private static List<TestVo> roopMethod(List<TestVo> oldList) {
-		//리프 flag
-		List<TestVo> leafList = flagLeaf(oldList);
-		//리프노드이고 컨텐츠가 없는건 삭제 => 대우
-		List<TestVo> setList = validationContents(leafList);
-		return setList;
+	private static List<TestVo> 병래리즘(List<TestVo> oldList) {
+		//리프 찾기
+		List<TestVo> leafList = 리프찾기(oldList);
+		//리프노드이며 그리고 컨텐츠가 없는건 삭제  == 리프노드가 아니거나 혹은 컨텐츠가 있는건 추가(대우)
+		List<TestVo> newList = 리프노드이며컨텐츠없는것제거(leafList);
+		return newList;
 	}
 	
-	//리프 flag
-	private static List<TestVo> flagLeaf(List<TestVo> oldList) {
+	//리프 찾기
+	private static List<TestVo> 리프찾기(List<TestVo> oldList) {
 		for (int i = 0; i < oldList.size(); i++) {
 			if (i < (oldList.size()-1) && !oldList.get(i).get자신아이디().equals(oldList.get(i+1).get부모아이디())) {
 				oldList.get(i).set리프유무("Y");
@@ -102,8 +113,8 @@ public class Main {
 		return oldList;
 	}
 	
-	//리프노드이고 컨텐츠가 없는건 삭제 => 대우
-	private static List<TestVo> validationContents(List<TestVo> leafList) {
+	//리프노드이며 그리고 컨텐츠가 없는건 삭제  == 리프노드가 아니거나 혹은 컨텐츠가 있는건 추가(대우)
+	private static List<TestVo> 리프노드이며컨텐츠없는것제거(List<TestVo> leafList) {
 		List<TestVo> setList = new ArrayList<TestVo>();
 		for (TestVo testVo : leafList) {
 			if (testVo.get리프유무().equals("N") || testVo.get컨텐츠().equals("★")) {
