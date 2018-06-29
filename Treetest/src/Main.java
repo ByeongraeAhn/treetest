@@ -27,11 +27,18 @@ public class Main {
 		oldList.add(new TestVo("소분류4","중분류3",""));
 		oldList.add(new TestVo("중분류4","대분류2",""));
 		oldList.add(new TestVo("소분류5","중분류4",""));
-		oldList.add(new TestVo("소분류6","소분류6",""));
+		oldList.add(new TestVo("소분류6","중분류4",""));
 		oldList.add(new TestVo("대분류3","root",""));
 		oldList.add(new TestVo("중분류5","대분류3","★"));
 		
+		//모든 노드중 가장 깊은 depth 찾기
+		int cursorDepth = findMaxDepth(oldList);
+				
 		
+		//알고리즘 적용
+		for (int i = 0; i < cursorDepth; i++) {
+			oldList = roopMethod(oldList);
+		}
 		
 		
 		//변환된 트리 데이터(그림2)
@@ -42,7 +49,70 @@ public class Main {
 		newList.add(new TestVo("소분류1","중분류1","★"));
 		newList.add(new TestVo("대분류3","root",""));
 		newList.add(new TestVo("중분류5","대분류3","★"));
+		
+		//테스트
+		for (int i = 0; i < oldList.size(); i++) {
+			if (oldList.get(i).get부모아이디().equals(newList.get(i).get부모아이디()) && oldList.get(i).get자신아이디().equals(newList.get(i).get자신아이디())) {
+				System.out.println("같다");
+			} else {
+				System.out.println("틀리다");
+			}
+		}
 
 	}
+
+	//모든 노드중 가장 깊은 depth 찾기
+	private static int findMaxDepth(List<TestVo> oldList) {
+		int cursorDepth = 0;
+		int finalDepth = 0;
+		for (int i = oldList.size()-1; i > 0; i--) {
+			if (oldList.get(i).get부모아이디().equals(oldList.get(i-1).get자신아이디()) ) {
+				cursorDepth += 1;
+				if(cursorDepth >= finalDepth) {
+					finalDepth = cursorDepth;
+				} 
+			} else {
+				cursorDepth = 0;
+			}
+		}
+		return cursorDepth;
+	}
+
+	
+	//루프 메서드. 트리 depth 만큼 호출. 
+	private static List<TestVo> roopMethod(List<TestVo> oldList) {
+		//리프 flag
+		List<TestVo> leafList = flagLeaf(oldList);
+		//리프노드이고 컨텐츠가 없는건 삭제 => 대우
+		List<TestVo> setList = validationContents(leafList);
+		return setList;
+	}
+	
+	//리프 flag
+	private static List<TestVo> flagLeaf(List<TestVo> oldList) {
+		for (int i = 0; i < oldList.size(); i++) {
+			if (i < (oldList.size()-1) && !oldList.get(i).get자신아이디().equals(oldList.get(i+1).get부모아이디())) {
+				oldList.get(i).set리프유무("Y");
+			} else if(i == oldList.size()-1) {
+				oldList.get(i).set리프유무("Y");
+			} else {
+				oldList.get(i).set리프유무("N");
+			}
+		}
+		return oldList;
+	}
+	
+	//리프노드이고 컨텐츠가 없는건 삭제 => 대우
+	private static List<TestVo> validationContents(List<TestVo> leafList) {
+		List<TestVo> setList = new ArrayList<TestVo>();
+		for (TestVo testVo : leafList) {
+			if (testVo.get리프유무().equals("N") || testVo.get컨텐츠().equals("★")) {
+				setList.add(testVo);
+			}
+		}
+		return setList; 
+	}
+
+
 
 }
