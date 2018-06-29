@@ -31,12 +31,14 @@ public class Main {
 		oldList.add(new TestVo("대분류3","root",""));
 		oldList.add(new TestVo("중분류5","대분류3","★"));
 		
+		
 		//모든 노드중 가장 깊은 depth 찾기
-		int cursorDepth = findMaxDepth(oldList);
+		int finalDepth = findMaxDepth(oldList);
 				
+		System.out.println(finalDepth);
 		
 		//알고리즘 적용
-		for (int i = 0; i < cursorDepth; i++) {
+		for (int i = 0; i < finalDepth; i++) {
 			oldList = roopMethod(oldList);
 		}
 		
@@ -75,7 +77,7 @@ public class Main {
 				cursorDepth = 0;
 			}
 		}
-		return cursorDepth;
+		return finalDepth;
 	}
 
 	
