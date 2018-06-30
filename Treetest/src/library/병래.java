@@ -12,21 +12,15 @@ public class 병래 {
 		
 		int finalDepth = 가장깊은depth찾기(oldList);
 		
-		//병래리즘 적용
+		//depth만큼 루프돌면서 노드 정리
 		for (int i = 0; i < finalDepth; i++) {
-			oldList = 병래리즘(oldList);
+			//리프 찾기
+			List<TestVo> leafList = 리프찾기(oldList);
+			//리프노드이며 그리고 컨텐츠가 없는건 삭제  == 리프노드가 아니거나 혹은 컨텐츠가 있는건 추가(대우)
+			oldList = 리프노드이며컨텐츠없는것제거(leafList);
 		}
 		
 		return oldList;
-	}
-	
-	//루프 메서드. 트리 depth 만큼 호출. 
-	private static List<TestVo> 병래리즘(List<TestVo> oldList) {
-		//리프 찾기
-		List<TestVo> leafList = 리프찾기(oldList);
-		//리프노드이며 그리고 컨텐츠가 없는건 삭제  == 리프노드가 아니거나 혹은 컨텐츠가 있는건 추가(대우)
-		List<TestVo> newList = 리프노드이며컨텐츠없는것제거(leafList);
-		return newList;
 	}
 	
 	//모든 노드중 가장 깊은 depth 찾기
