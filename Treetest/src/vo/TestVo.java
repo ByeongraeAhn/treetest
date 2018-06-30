@@ -1,3 +1,4 @@
+package vo;
 
 public class TestVo {
 	private String 자신아이디;
